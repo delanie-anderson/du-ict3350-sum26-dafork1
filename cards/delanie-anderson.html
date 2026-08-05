@@ -40,7 +40,7 @@
 				flex: 1;
 				text-align: left;
 			}
-			select {
+			select, input {
 				font-size: 12px;
 				width: 100%;
 			}
@@ -72,11 +72,12 @@
 			<p id='mainTitle'>Minecraft Server Status</p>
 			<div class='row'>
 				<div class='label'>Server:</div>
-				<select id='serverSelect' onchange='checkServerStatus();'>
+				<input id='serverSelect' list='serverOptions' placeholder='Type or choose a server' onchange='checkServerStatus();'>
+				<datalist id='serverOptions'>
 					<option value='play.hypixel.net'>Hypixel</option>
 					<option value='play.cubecraft.net'>CubeCraft</option>
 					<option value='us.mineplex.com'>Mineplex</option>
-				</select>
+				</datalist>
 			</div>
 			<div class='row'>
 				<div class='label'>Status:</div>
