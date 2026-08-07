@@ -96,6 +96,7 @@
 				var timestamp = document.getElementById('timestamp');
 				var now = new Date();
 				timestamp.textContent = 'Updated: ' + now.toLocaleString();
+				console.log('Timestamp updated:', { time: now.toISOString(), displayText: timestamp.textContent });
 			}
 
 			function checkServerStatus() {
@@ -103,32 +104,38 @@
 				var resultBox = document.getElementById('statusResult');
 				var playersBox = document.getElementById('playersResult');
 
+				console.log('Starting status check:', { server: server, statusText: resultBox.textContent });
+
 				resultBox.textContent = 'Checking...';
 				resultBox.style.color = '#666';
 				playersBox.textContent = '--';
+
+				debugger;
 
 				fetch('https://api.mcsrvstat.us/3/' + encodeURIComponent(server))
 					.then(function(response) {
 						return response.json();
 					})
 					.then(function(data) {
+						var online = data && data.players && data.players.online ? data.players.online : 0;
+						var max = data && data.players && data.players.max ? data.players.max : 0;
+
+						debugger;
+						console.log('Received API response:', { server: server, data: data, online: data && data.online, onlinePlayers: online, maxPlayers: max });
+
 						if (data && data.online) {
 							resultBox.textContent = 'Online';
 							resultBox.style.color = 'green';
-							var online = data.players && data.players.online ? data.players.online : 0;
-							var max = data.players && data.players.max ? data.players.max : 0;
 							playersBox.textContent = online + ' / ' + max;
 						} else {
 							resultBox.textContent = 'Offline';
 							resultBox.style.color = 'red';
 							playersBox.textContent = '0 / 0';
 						}
+
+						debugger;
+						console.log('Rendered card values:', { server: server, status: resultBox.textContent, players: playersBox.textContent, color: resultBox.style.color });
 						updateTimestamp();
-					})
-					.catch(function() {
-						resultBox.textContent = 'Unable to check status';
-						resultBox.style.color = '#b22222';
-						playersBox.textContent = '--';
 					});
 			}
 
