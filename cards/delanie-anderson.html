@@ -100,11 +100,47 @@
 			}
 
 			function checkServerStatus() {
-				var server = document.getElementById('serverSelect').value;
+				var server = document.getElementById('serverSelect').value.trim();
 				var resultBox = document.getElementById('statusResult');
 				var playersBox = document.getElementById('playersResult');
 
 				console.log('Starting status check:', { server: server, statusText: resultBox.textContent });
+
+				if (!server) {
+					alert('Please type a server name before checking status.');
+					resultBox.textContent = 'No server entered';
+					resultBox.style.color = '#666';
+					playersBox.textContent = '--';
+					console.log('Blank server input caught:', { server: server });
+					return;
+				}
+
+				if (/^[0-9+\-*/().\s]+$/.test(server)) {
+					alert('Please enter a server name, not a math expression.');
+					resultBox.textContent = 'Invalid expression';
+					resultBox.style.color = '#b22222';
+					playersBox.textContent = '--';
+					console.log('Math expression input caught:', { server: server });
+					return;
+				}
+
+				if (/[^a-zA-Z0-9.-]/.test(server)) {
+					alert('Only letters, numbers, periods, and dashes are supported for server names.');
+					resultBox.textContent = 'Unsupported characters';
+					resultBox.style.color = '#b22222';
+					playersBox.textContent = '--';
+					console.log('Unsupported character input caught:', { server: server });
+					return;
+				}
+
+				if (!server.includes('.') || server.split('.').some(function(part) { return part.length < 1; })) {
+					alert('Please enter a valid server hostname, such as play.hypixel.net.');
+					resultBox.textContent = 'Invalid server name';
+					resultBox.style.color = '#b22222';
+					playersBox.textContent = '--';
+					console.log('Hostname format input caught:', { server: server });
+					return;
+				}
 
 				resultBox.textContent = 'Checking...';
 				resultBox.style.color = '#666';
@@ -139,7 +175,9 @@
 					});
 			}
 
-			checkServerStatus();
+			if (document.getElementById('serverSelect').value.trim() !== '') {
+				checkServerStatus();
+			}
 		</script>
 	</body>
 </html>
