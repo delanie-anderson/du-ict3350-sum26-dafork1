@@ -69,6 +69,7 @@
 			}
 			#statusResult {
 				font-weight: bold;
+				color: #1f2937;
 			}
 			#timestamp {
 				position: absolute;
@@ -146,7 +147,13 @@
 			function updateTimestamp() {
 				var timestamp = document.getElementById('timestamp');
 				var now = new Date();
-				timestamp.textContent = 'Updated: ' + now.toLocaleString();
+				var year = now.getFullYear();
+				var month = String(now.getMonth() + 1).padStart(2, '0');
+				var day = String(now.getDate()).padStart(2, '0');
+				var hours = String(now.getHours()).padStart(2, '0');
+				var minutes = String(now.getMinutes()).padStart(2, '0');
+				var seconds = String(now.getSeconds()).padStart(2, '0');
+				timestamp.textContent = 'Updated: ' + year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
 				console.log('Timestamp updated:', { time: now.toISOString(), displayText: timestamp.textContent });
 			}
 
@@ -212,11 +219,13 @@
 
 						if (data && data.online) {
 							resultBox.textContent = 'Online';
-							resultBox.style.color = 'green';
+							resultBox.style.color = '#0b6b0b';
+							resultBox.style.fontWeight = '700';
 							playersBox.textContent = online + ' / ' + max;
 						} else {
 							resultBox.textContent = 'Offline';
-							resultBox.style.color = 'red';
+							resultBox.style.color = '#8b1e1e';
+							resultBox.style.fontWeight = '700';
 							playersBox.textContent = '0 / 0';
 						}
 
